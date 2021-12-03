@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+
+@CrossOrigin("*")
+//        (origins = "http://127.0.0.1:5500")
 @RestController
 
-@CrossOrigin
 public class EmployeeController {
 
     @Autowired
@@ -52,7 +55,8 @@ public class EmployeeController {
 
     }
 
-    @DeleteMapping("/{id}")
+//    @CrossOrigin(origins = "http://127.0.0.1:5500/")
+    @DeleteMapping("employees/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id){
         employeeService.deleteEmployee(id);
         return  new ResponseEntity<>(HttpStatus.OK);
