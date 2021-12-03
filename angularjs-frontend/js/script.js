@@ -12,20 +12,24 @@ $scope.btnName = "Add Employee"
  
 
 //getting all the employees 
- $http.get(URL +'employees').then(function(response){
-     console.log("success");
-     console.log(response);
+function refresh(){
+    $http.get(URL +'employees').then(function(response){
+        console.log("success");
+        console.log(response);
+       
+       $scope.all_data = response.data;
+       
+       // $scope.all_data = JSON.parse(all_data);
+       
     
-    $scope.all_data = response.data;
-    
-    // $scope.all_data = JSON.parse(all_data);
-    
- 
+   
+    }, function(error){
+        console.log(error);
+   
+    });
+}
+refresh();
 
- }, function(error){
-     console.log(error);
-
- });
 
  //add employee and edit employee
 
@@ -40,8 +44,11 @@ $scope.btnName = "Add Employee"
     if($scope.id==-1){
         $http.post(URL+'employees', JSON.stringify(employee)).then(function(response){
             if(response.data){
+                refresh();
+                clearForm();
                 $scope.msg ="Data inserted successfully";
                 console.log($scope.msg);
+                
             }
             else{
                 console.log("post data error");
@@ -62,6 +69,8 @@ $scope.btnName = "Add Employee"
                     console.log("update successfully");
                     $scope.btnName ="Add Employee";
                     alert("Employee update Successfully");
+                    refresh();
+                    clearForm();
                 }
     
             },
@@ -82,6 +91,8 @@ $scope.btnName = "Add Employee"
     $http.delete(URL+'employees/'+emp.id).then(function(response){
         console.log("deleted successfully");
         alert("Employeed got fired");
+        refresh();
+        
 
     },
     function(error){
@@ -98,4 +109,13 @@ $scope.editEmployee = function( emp ){
     console.log($scope.id, $scope.name, $scope.address)
    
 }
+
+
+
+function clearForm(){
+    $scope.id = -1;
+    $scope.name = "";
+    $scope.address = "";
+}
 });
+
